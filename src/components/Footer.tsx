@@ -5,15 +5,22 @@ import WhatsappIcon from '../assets/footer/whatsapp.svg';
 import InstagramIcon from '../assets/footer/instagram.svg';
 import LinkedinIcon from '../assets/footer/linkedinwhite.svg';
 import YoutubeIcon from '../assets/footer/youtubewhite.svg';
+import { subscribeEmail } from './Api';
 
 export default function mkFooter() {
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    // Handle email submission
-    console.log('Email submitted:', email);
-    setEmail('');
+    try {
+      await subscribeEmail(email);
+      console.log("Subscription successful!");
+      //setMessage("Subscription successful!");
+      setEmail(""); // clear field after success
+    } catch (error) {
+      //setMessage("Subscription failed. Try again.");
+      console.error(error);
+    }
   };
 
   return (
